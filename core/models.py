@@ -37,9 +37,9 @@ class Category(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
-    date = models.DateField()
+    date = models.DateField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
-    categories = models.ManyToManyField(Category, related_name="posts")
+    category = models.ManyToManyField(Category, related_name="posts")
 
     def __str__(self):
         return f"{self.title} - {self.user} - {self.date}"
