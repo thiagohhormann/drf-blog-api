@@ -57,8 +57,7 @@ class Comment(models.Model):
 
 class Media(models.Model):
     file = models.FileField()
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True)
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, blank=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.file.name
