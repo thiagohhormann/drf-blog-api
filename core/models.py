@@ -17,7 +17,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     biography = models.CharField(max_length=300, blank=True)
     avatar = models.ImageField(upload_to="core/avatars", blank=True)
-    birthday = models.DateField(null=True, blank=True)
+    birthday = models.DateField()
     social_media = models.JSONField(null=True, blank=True)
 
     def __str__(self):
