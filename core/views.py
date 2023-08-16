@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 
-from .models import Profile, User
-from .serializers import UserSerializer, ProfileSerializer
+from .models import Profile, User, Category
+from .serializers import UserSerializer, ProfileSerializer, CategorySerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -12,3 +12,8 @@ class UserViewSet(viewsets.ModelViewSet):
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
