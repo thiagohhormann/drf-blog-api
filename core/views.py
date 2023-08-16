@@ -1,12 +1,13 @@
 from rest_framework import viewsets
 
-from .models import Profile, User, Category, Post, Comment
+from .models import Profile, User, Category, Post, Comment, Media
 from .serializers import (
     UserSerializer,
     ProfileSerializer,
     CategorySerializer,
     PostSerializer,
     CommentSerializer,
+    MediaSerializer,
 )
 
 
@@ -33,3 +34,8 @@ class PostViewSet(viewsets.ModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+
+
+class MediaViewSet(viewsets.ModelViewSet):
+    queryset = Media.objects.all()
+    serializer_class = MediaSerializer

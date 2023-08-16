@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import User, Profile, Category, Post, Comment
+from .models import User, Profile, Category, Post, Comment, Media
 
 
 @admin.register(User)
@@ -38,6 +38,7 @@ class ProfileAdmin(admin.ModelAdmin):
 class PostInline(admin.TabularInline):
     model = Post.category.through
     readonly_fields = ["post"]
+    extra = 0
 
 
 @admin.register(Category)
@@ -48,12 +49,20 @@ class CategoryAdmin(admin.ModelAdmin):
 class CommentInline(admin.TabularInline):
     model = Comment
     readonly_fields = ["title", "content", "user"]
+    extra = 0
+
+
+class MediaInline(admin.TabularInline):
+    model = Media
+    readonly_fields = ["file"]
+    extra = 0
+
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ["title", "categories"]
 
-    inlines = [CommentInline]
+    inlines = [CommentInline, MediaInline]
 
     def categories(self, obj):
         return "\n".join([c.name for c in obj.category.all()])
@@ -62,3 +71,8 @@ class PostAdmin(admin.ModelAdmin):
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ["title", "user", "post"]
+
+
+@admin.register(Media)
+class MediaAdmin(admin.ModelAdmin):
+    pass
