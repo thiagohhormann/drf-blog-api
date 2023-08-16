@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import User, Profile, Category, Post
+from .models import User, Profile, Category, Post, Comment
 
 
 @admin.register(User)
@@ -45,9 +45,20 @@ class CategoryAdmin(admin.ModelAdmin):
     inlines = [PostInline]
 
 
+class CommentInline(admin.TabularInline):
+    model = Comment
+    readonly_fields = ["title", "content", "user"]
+
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ["title", "categories"]
 
+    inlines = [CommentInline]
+
     def categories(self, obj):
         return "\n".join([c.name for c in obj.category.all()])
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ["title", "user", "post"]
