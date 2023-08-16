@@ -30,4 +30,6 @@ class UserAdmin(admin.ModelAdmin):
     list_display = ["username", "email", "first_name", "last_name", "is_active"]
 
 
-admin.site.register(Profile)
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ["user", "birthday"]
