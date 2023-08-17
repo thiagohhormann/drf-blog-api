@@ -52,7 +52,7 @@ class UserAdmin(DefaultUserAdmin):
         ("Status", {"fields": ["is_active"]}),
     ]
 
-    list_display = ["username", "email", "first_name", "last_name", "is_active"]
+    list_display = ["id", "username", "email", "first_name", "last_name", "is_active"]
 
 
 @admin.register(Profile)
@@ -68,12 +68,13 @@ class PostInline(admin.TabularInline):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
+    list_display = ["id", "name"]
     inlines = [PostInline]
 
 
 class CommentInline(admin.TabularInline):
     model = Comment
-    readonly_fields = ["title", "content", "user"]
+    readonly_fields = ["id", "title", "content", "user"]
     extra = 0
 
 
@@ -85,7 +86,7 @@ class MediaInline(admin.TabularInline):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ["title", "categories"]
+    list_display = ["id", "user", "title", "categories"]
 
     inlines = [CommentInline, MediaInline]
 
@@ -95,7 +96,7 @@ class PostAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ["title", "user", "post"]
+    list_display = ["id", "title", "user", "post"]
 
 
 @admin.register(Media)
