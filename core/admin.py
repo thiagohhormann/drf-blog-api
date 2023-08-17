@@ -1,11 +1,36 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as DefaultUserAdmin
+from django import forms
 
 from .models import User, Profile, Category, Post, Comment, Media
 
 
+class UserAdminForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = "__all__"
+        exclude = ["date_joined"]
+
+    password2 = forms.CharField(
+        label="Password Confirmation",
+        widget=forms.PasswordInput,
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["password"].widget = forms.PasswordInput()
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("Passwords don't match")
+        return password2
+
+
 @admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    fieldsets = [
+class UserAdmin(DefaultUserAdmin):
+    add_fieldsets = [
         (
             "Registration",
             {
