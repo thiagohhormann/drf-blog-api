@@ -11,19 +11,21 @@ class UserSerializer(serializers.ModelSerializer):
 
     def validate_password(self, value: str) -> str:
         """
-            Hash value passed by user.
+        Hash value passed by user.
 
-            :param value: password of a user
-            :return: a hashed version of the password
+        :param value: password of a user
+        :return: a hashed version of the password
         """
         return make_password(value)
-
 
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = "__all__"
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -37,14 +39,23 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = "__all__"
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = "__all__"
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
 
 class MediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Media
         fields = "__all__"
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)

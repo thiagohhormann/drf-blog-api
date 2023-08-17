@@ -1,4 +1,6 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from .permissions import IsOwnerOrReadOnly
 
 from .models import Profile, User, Category, Post, Comment, Media
 from .serializers import (
@@ -25,13 +27,19 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
+    def get_permissions(self):
+        permission_classes = [IsAuthenticatedOrReadOnly]
+        return [permission() for permission in permission_classes]
+
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
     def get_permissions(self):
-        permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+        permission_classes = [IsAuthenticatedOrReadOnly]
+        if self.action in ["update", "partial_update", "destroy"]:
+            permission_classes.append(IsOwnerOrReadOnly)
         return [permission() for permission in permission_classes]
 
 
@@ -40,7 +48,9 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
 
     def get_permissions(self):
-        permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+        permission_classes = [IsAuthenticatedOrReadOnly]
+        if self.action in ["update", "partial_update", "destroy"]:
+            permission_classes.append(IsOwnerOrReadOnly)
         return [permission() for permission in permission_classes]
 
 

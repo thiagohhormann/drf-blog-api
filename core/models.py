@@ -26,6 +26,10 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
+    @property
+    def owner(self):
+        return self.user_id
+
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
@@ -45,7 +49,11 @@ class Post(models.Model):
     category = models.ManyToManyField(Category, related_name="posts")
 
     def __str__(self):
-        return f"{self.title} - {self.user} - {self.date}"
+        return f"Author: {self.user} - ID {self.user_id} | Date: {self.date}"
+
+    @property
+    def owner(self):
+        return self.user_id
 
 
 class Comment(models.Model):
@@ -57,6 +65,10 @@ class Comment(models.Model):
     def __str__(self):
         return self.title
 
+    @property
+    def owner(self):
+        return self.user_id
+
 
 class Media(models.Model):
     file = models.FileField()
@@ -64,3 +76,7 @@ class Media(models.Model):
 
     def __str__(self):
         return self.file.name
+
+    @property
+    def owner(self):
+        return self.user_id
